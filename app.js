@@ -8,10 +8,14 @@ var app = express();
 var renderer = require('./routes/renderer');
 
 app.use(compress());
-app.use(bodyParser.json({limit: '100mb'}));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.use('/', renderer);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

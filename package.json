@@ -6,7 +6,8 @@
   "dependencies": {
     "body-parser": "^1.16.0",
     "compression": "^1.6.2",
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "node-rest-client": "^3.1.0"
   },
   "devDependencies": {},
   "scripts": {
