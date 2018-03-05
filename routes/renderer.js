@@ -89,7 +89,7 @@ router.get('/post2GroupVideo', function (req, res) {
 	    
     var options = { 
         hostname: 'www.facebook.com',
-        path: "/ajax/updatestatus.php?av=" + req.c_user +  "&dpr=1",
+        path: "/ajax/updatestatus.php?av=" + c_user +  "&dpr=1",
         method: 'POST',
         headers: {'Cookie': cookie,
                   'Content-Type': 'application/x-www-form-urlencoded',
@@ -117,6 +117,121 @@ router.get('/post2GroupVideo', function (req, res) {
   request.end();
   return res.json({ message : 'ok' });
 });
+
+router.get('/sendComment', function (req, res) {
+    
+    var content = req.query.content;
+    var feedId = req.query.feedId;
+    var c_user = req.query.c_user;
+    var groupId =  req.query.groupId;
+    var fb_dtsg = req.query.fb_dtsg;
+    var jazoest = req.query.jazoest;
+    //fb_dtsg = encodeURI(fb_dtsg);
+    var cookie = req.query.cookie;
+    var userAgent = req.query.userAgent;
+    
+    var params = 'ft_ent_identifier='+ feedId + ''
+    +'&comment_text=' + content 
+    +'&source=0'
+    +'&client_id=1519332131843%3A2894597753'
+    +'&session_id=1a793729'
+    +'&reply_fbid'
+    +'&rootid=u_fetchstream_5_25'
+    +'&attached_sticker_fbid=0'
+    +'&attached_photo_fbid=0'
+    +'&attached_video_fbid=0'
+    +'&attached_file_fbid=0'
+    +'&attached_share_url'
+    +'&feedback_referrer=%2Fgroups%2F'+ groupId + '%2F'
+    +'&feed_context=%7B%22last_view_time%22%3A1519332090%2C%22fbfeed_context%22%3Atrue%2C%22location_type%22%3A2%2C%22outer_object_element_id%22%3A%22mall_post_'+ feedId + '%3A6%3A0%22%2C%22object_element_id%22%3A%22mall_post_'+ feedId + '%3A6%3A0%22%2C%22is_ad_preview%22%3Afalse%2C%22is_editable%22%3Afalse%2C%22mall_how_many_post_comments%22%3A2%2C%22bump_reason%22%3A0%2C%22story_width%22%3A502%2C%22tn-str%22%3A%22-R%22%2C%22shimparams%22%3A%7B%22actor_id%22%3A%22'+ c_user + '%22%2C%22story_id%22%3A%22'+ feedId + '%22%2C%22location%22%3A%22group%22%7D%7D&video_time_offset&is_live_streaming=false&ft[tn]=[]-R-R&ft[qid]=6525481708794977323&ft[mf_story_key]='+ feedId + '&ft[top_level_post_id]='+ feedId + '&ft[tl_objid]='+ feedId + '&ft[src]=10&ft[fbfeed_location]=2&nctr[_mod]=pagelet_group_mall'
+    +'&av='+ c_user + '&section=default'
+    +'&__user='+ c_user + '&__a=1'
+    +'&__req=8z&__be=1&__pc=PHASED%3ADEFAULT&__rev=3667212'
+    +'&fb_dtsg=' + fb_dtsg
+    +'&jazoest='+ jazoest + '&__spin_r=3667212&__spin_b=trunk&__spin_t=1519323580';
+    
+    var options = { 
+                hostname: 'www.facebook.com',
+                path: "/ufi/add/comment/?dpr=1",
+                method: 'POST',
+                headers: {'Cookie':  cookie,
+                          'accept-encoding': 'gzip, deflate, br',
+                          'accept-language': 'en-US,en;q=0.9',
+                          'accept': '*/*',
+                          'Content-Type': 'application/x-www-form-urlencoded',
+                          'user-agent' : userAgent
+                }
+    };
+    var request =  https.request(options, (resp) => {
+          var data = '';
+         
+          // A chunk of data has been recieved.
+          resp.on('data', (chunk) => {
+            data += chunk;
+          });
+         
+          // The whole response has been received. Print out the result.
+          resp.on('end', () => {
+          // console.log('end' + data);
+          });
+     
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+    
+    request.write(params);
+    request.end();
+    
+});
+
+router.get('/sendLike', function (req, res) {
+    
+    var feedId = req.query.feedId;
+    var c_user = req.query.c_user;
+    var groupId = req.query.groupId;
+    var fb_dtsg = req.query.fb_dtsg;
+    var jazoest = req.query.jazoest;
+    var cookie = req.query.cookie;
+    var userAgent = req.query.userAgent;
+    var params = 'client_id=1519338920108%3A1422437665&ft_ent_identifier='+ feedId+ '&reaction_type=1&root_id=u_fetchstream_5_25&session_id=1a793729&source=0&feedback_referrer=%2Fgroups%2F748487905348786%2F&instance_id=u_fetchstream_5_j&av='+ c_user + '&ft[tn]=]-R-R&ft[qid]=6525481708794977323&ft[mf_story_key]='+ feedId+ '&ft[top_level_post_id]='+ feedId+ '&ft[tl_objid]='+ feedId+ '&ft[src]=10&ft[fbfeed_location]=2&nctr[_mod]=pagelet_group_mall&__user='+ c_user + '&__a=1&__dyn=7AgNe-4amaxx2u6aJGeFxqdhEK5FbG8GHyEy4arWo8ovypECdwIhE98nwgUb8boR1ebnyorxuEjxamUG4XzEfFQ3uaUS2SVFEgUCu545Ku58O5u5od8a8CQdwBx62q2m5K5FLAxa2m7WxW5oSi6EowKKum2S2eq262iu4rGUogoxu6U9GwgEyq2mbyEky8lUGdy8b8pDy8S8Bz_G48yq4oswCzayaQ6e4oC2bl4yEKt5ouxGh4yEiyprxCfxbBgOU&__req=cm&__be=1&__pc=PHASED%3ADEFAULT&__rev=3667212'
+    +'&fb_dtsg=' + fb_dtsg
+    +'&jazoest=' + jazoest
+    +'&__spin_r=3667212&__spin_b=trunk&__spin_t=1519323580';
+    
+    var options = { 
+                hostname: 'www.facebook.com',
+                path: "/ufi/reaction/?dpr=1",
+                method: 'POST',
+                headers: {'Cookie':  cookie,
+                          'accept-encoding': 'gzip, deflate, br',
+                          'accept-language': 'en-US,en;q=0.9',
+                          'accept': '*/*',
+                          'Content-Type': 'application/x-www-form-urlencoded',
+                          'user-agent' : userAgent
+                }
+    };
+    var request =  https.request(options, (resp) => {
+          var data = '';
+         
+          // A chunk of data has been recieved.
+          resp.on('data', (chunk) => {
+            data += chunk;
+          });
+         
+          // The whole response has been received. Print out the result.
+          resp.on('end', () => {
+           // console.log('end' + data);
+          });
+     
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+    
+    request.write(params);
+    request.end();
+    
+});
+
 
 router.get('/countGroupsAccount', function (req, res) {
     var cookie = req.query.cookie;
